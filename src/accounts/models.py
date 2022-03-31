@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 
-from core.fields import UUIDPrimaryKey
+# from ..core.fields import UUIDPrimaryKey
 
 from .managers import UserManager
 
@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    id = UUIDPrimaryKey()
+    # id = UUIDPrimaryKey()
     first_name = models.CharField('first name', max_length=30, blank=True)
     last_name = models.CharField('last name', max_length=30, blank=True)
     email = models.EmailField('email address', unique=True)

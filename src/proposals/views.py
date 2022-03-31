@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.cache import never_cache
 
-from accounts.decorators import active_user_required
+from src.accounts.decorators import active_user_required
 
 from . import helpers
 from .helpers import get_proposals_for_list, get_proposals_for_voting
@@ -46,6 +46,7 @@ def user_votes_view(request):
 @never_cache
 @active_user_required
 def landing(request):
+    print("======= WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     if settings.PROPOSAL_VOTING_CLOSED:
         messages.warning(request, "Voting has now closed")
         return redirect('votes_list')

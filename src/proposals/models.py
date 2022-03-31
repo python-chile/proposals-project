@@ -5,13 +5,13 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 
-from core.fields import UUIDPrimaryKey
+# from core.fields import UUIDPrimaryKey
 
 from .query import ProposalQuerySet
 
 
 class Proposal(models.Model):
-    id = UUIDPrimaryKey()
+    # id = UUIDPrimaryKey()
     added_on = models.DateTimeField()
     updated_on = models.DateTimeField(blank=True, null=True, default=None)
     vote_count = models.PositiveIntegerField(default=0)
@@ -94,7 +94,7 @@ class ProposalVote(models.Model):
         (NO, 'No'),
     )
 
-    id = UUIDPrimaryKey()
+    # id = UUIDPrimaryKey()
     voter = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

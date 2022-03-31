@@ -1,13 +1,15 @@
-# -*- coding: utf-8 -*-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
+
 import social_django.urls
-import accounts.urls
+
+from src.accounts import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('proposals.urls')),
-    path('accounts/', include(accounts.urls)),
+    path('', include('src.proposals.urls')),
+    path('accounts/', include(urls)),
     path('accounts/', include(social_django.urls)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

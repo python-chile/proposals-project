@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
-from getenv import env
+# from getenv import env
+import os
 from django.urls import reverse_lazy
 
+DEBUG = True
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print("BASE_DIR", BASE_DIR)
 
-INSTALLED_ADDONS = [
-    # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags is auto-generated. Manual changes will be overwritten.
-    'aldryn-addons',
-    'aldryn-django',
-    # </INSTALLED_ADDONS>
-]
 
-import aldryn_addons.settings
-aldryn_addons.settings.load(locals())
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '3w@i3y)g#vrmopo%nnx1+e3dawk%9+vnus=ox3zj2prx2(v#^j'
 
 USE_TZ = True
 USE_L10N = True
@@ -21,12 +18,26 @@ TIME_ZONE = 'America/New_York'
 ENABLE_SYNCING = False
 STATIC_ROOT = '/static'
 #STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-INSTALLED_APPS.extend([
-    'core',
-    'accounts',
-    'proposals',
+INSTALLED_APPS = [
+'django.contrib.admin',
+'django.contrib.auth',
+'django.contrib.contenttypes',
+'django.contrib.sessions',
+'django.contrib.messages',
+'django.contrib.staticfiles',
+
+    'src.core',
+    'src.accounts',
+    'src.proposals',
     'social_django',
-])
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 # Accounts
@@ -46,10 +57,10 @@ SOCIAL_AUTH_USER_FIELDS = ['email', 'first_name', 'last_name']
 SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email']
 SOCIAL_AUTH_USER_MODEL = 'accounts.User'
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_UNIQUE_USER_ID = False
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_API_CLIENT_ID')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_API_CLIENT_SECRET')
-SOCIAL_AUTH_GITHUB_KEY = env('GITHUB_API_CLIENT_ID')
-SOCIAL_AUTH_GITHUB_SECRET = env('GITHUB_API_CLIENT_SECRET')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_API_CLIENT_ID')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_API_CLIENT_SECRET')
+# SOCIAL_AUTH_GITHUB_KEY = env('GITHUB_API_CLIENT_ID')
+# SOCIAL_AUTH_GITHUB_SECRET = env('GITHUB_API_CLIENT_SECRET')
 SOCIAL_AUTH_GITHUB_SCOPE = ['user:email']
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 SOCIAL_AUTH_SANITIZE_REDIRECTS = True
@@ -58,7 +69,7 @@ SOCIAL_AUTH_SESSION_EXPIRATION = True
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 SOCIAL_AUTH_INACTIVE_USER_LOGIN = False
 
-PROPOSAL_VOTING_CLOSED = env('PROPOSAL_VOTING_OPEN', default=False)
+# PROPOSAL_VOTING_CLOSED = env('PROPOSAL_VOTING_OPEN', default=False)
 
 SOCIAL_AUTH_PIPELINE = (
     # Get the information we can about the user and return it in a simple
@@ -101,8 +112,8 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # Email
-ADMIN_EMAILS = ['vote@pylatam.org']
-DEFAULT_FROM_EMAIL = 'PyLatam noreply@pylatam.org'
+ADMIN_EMAILS = ['vote@example.com']
+DEFAULT_FROM_EMAIL = 'PyLatam noreply@example.com'
 
 TALK_LANGUAGES = (
     ('en', 'English'),
@@ -120,8 +131,42 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.current_site',
+                # 'core.context_processors.current_site',
             ],
         },
     },
 ]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+print("STATIC_ROOT")
+print(STATIC_ROOT)
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+print("STATICFILES_DIRS")
+print(STATICFILES_DIRS)
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '../media')
+
+ROOT_URLCONF = 'urls'
+
+PROPOSAL_VOTING_CLOSED = False
